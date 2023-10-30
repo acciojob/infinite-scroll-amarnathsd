@@ -1,36 +1,28 @@
-//your code here!
+// Function to create a new list item
+function createListItem(number) {
+  const li = document.createElement("li");
+  li.textContent = `List Item ${number}`;
+  return li;
+}
 
-const infiList = document.getElementById("infi-list");
-const list = infiList;
-const loadMoreThreshold = 200; // You can adjust this value based on your needs
+const list = document.getElementById("infi-list");
+let nextItemNumber = 11;
 
-// Function to add new list items
-function addMoreItems() {
-  for (let i = 0; i < 2; i++) {
-    const newItem = document.createElement("li");
-    newItem.textContent = "New List Item";
-    list.appendChild(newItem);
+// Add about 10 list items by default
+for (let i = 1; i <= 10; i++) {
+  list.appendChild(createListItem(i));
+}
+
+// Function to handle scroll event and add more items
+function handleScroll() {
+  if (list.scrollTop + list.clientHeight >= list.scrollHeight) {
+    // User has reached the end of the list
+    for (let i = 0; i < 2; i++) {
+      list.appendChild(createListItem(nextItemNumber));
+      nextItemNumber++;
+    }
   }
 }
 
-// Function to check if the user has scrolled to the bottom of the list
-function isScrolledToBottom() {
-  return list.scrollTop + list.clientHeight >= list.scrollHeight - loadMoreThreshold;
-}
-
-// Initial load of 10 list items
-for (let i = 0; i < 10; i++) {
-  const listItem = document.createElement("li");
-  listItem.textContent = "List Item " + (i + 1);
-  list.appendChild(listItem);
-}
-
-// Add more items when the user scrolls to the bottom
-list.addEventListener("scroll", () => {
-  if (isScrolledToBottom()) {
-    addMoreItems();
-  }
-});
-
-// You can also trigger the initial loading of more items when the page loads.
-// addMoreItems();
+// Attach the scroll event listener
+list.addEventListener("scroll", handleScroll);
